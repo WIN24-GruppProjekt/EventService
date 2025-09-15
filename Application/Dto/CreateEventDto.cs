@@ -17,10 +17,6 @@ public class CreateEventDto
     [Required(ErrorMessage = "End time is required")]
     public DateTime EndTime { get; set; }
 
-    [Required(ErrorMessage = "Instructor name is required")]
-    [StringLength(50, ErrorMessage = "Instructor name can be max 50 characters")]
-    public string InstructorName { get; set; } = string.Empty;
-
     [Required(ErrorMessage = "Max participants is required")]
     [Range(1, 100, ErrorMessage = "Max participants must be between 1 and 100")]
     public int MaxParticipants { get; set; }

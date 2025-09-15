@@ -36,13 +36,8 @@ public class Event
     public DateTime? UpdatedAt { get; set; }
 
     // Foreign Keys
-    public int InstructorId { get; set; }
     public int? CategoryId { get; set; }
 
     // Navigation properties
-    public virtual Instructor Instructor { get; set; } = null!;
     public virtual Category? Category { get; set; }
-
-    // Legacy property for backward compatibility
-    public string InstructorName => Instructor?.FullName ?? string.Empty;
 }

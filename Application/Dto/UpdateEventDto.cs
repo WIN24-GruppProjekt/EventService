@@ -25,10 +25,6 @@ public class UpdateEventDto
     [Range(1, 1000, ErrorMessage = "Max participants must be between 1 and 1000")]
     public int MaxParticipants { get; set; }
 
-    // Foreign Keys for relationships
-    [Required(ErrorMessage = "Instructor is required")]
-    public int InstructorId { get; set; }
-
     public int? CategoryId { get; set; }
 
     // Custom validation

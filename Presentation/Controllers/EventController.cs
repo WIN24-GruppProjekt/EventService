@@ -1,6 +1,3 @@
 namespace Presentation.Controllers;
 
-public class EventController
-{
-    
-}
+public class EventController { }

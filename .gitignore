@@ -361,7 +361,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 .idea/
+<<<<<<< HEAD
 
 # Project specific files
 Inlämning.md
 inl.md
+=======
+>>>>>>> 5aa8d78353f8a5339c412713a0ce22a6b5cedeb3

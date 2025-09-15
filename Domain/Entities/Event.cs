@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities;
@@ -46,17 +45,4 @@ public class Event
 
     // Legacy property for backward compatibility
     public string InstructorName => Instructor?.FullName ?? string.Empty;
-=======
-public class Event
-{
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
-    public string InstructorName { get; set; }
-    public int MaxParticipants { get; set; }
-    public int AvailableSpots { get; set; }
-    public string Location { get; set; }
->>>>>>> 5aa8d78353f8a5339c412713a0ce22a6b5cedeb3
 }

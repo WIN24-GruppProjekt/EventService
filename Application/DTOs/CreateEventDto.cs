@@ -6,10 +6,10 @@ public class CreateEventDto
 {
     [Required]
     [StringLength(200, ErrorMessage = "Title cannot be longer than 200 characters.")]
-    public string Title { get; set; } = string.Empty;
+    public string Title { get; set; } = null!;
 
     [StringLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters.")]
-    public string Description { get; set; } = string.Empty;
+    public string Description { get; set; } = null!;
 
     [Required]
     public DateTime StartTime { get; set; }
@@ -19,8 +19,8 @@ public class CreateEventDto
 
     [Required]
     [StringLength(200, ErrorMessage = "Location cannot be longer than 200 characters.")]
-    public string Location { get; set; } = string.Empty;
+    public string Location { get; set; } = null!;
 
     [StringLength(100, ErrorMessage = "Location room cannot be longer than 100 characters.")]
-    public string LocationRoom { get; set; } = string.Empty;
+    public string LocationRoom { get; set; } = null!;
 }

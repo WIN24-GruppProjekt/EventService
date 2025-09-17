@@ -1,6 +1,7 @@
 using Application.Interfaces;
 using Application.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Persistence.Contexts;
 using Persistence.Interfaces;
 using Persistence.Repositories;
@@ -23,7 +24,8 @@ builder.Services.AddCors(options =>
                     "http://127.0.0.1:3000",
                     "http://localhost:5001",
                     "http://localhost:5173",
-                    "http://127.0.0.1:5173"
+                    "http://127.0.0.1:5173",
+                    "https://proud-glacier-04e577903.1.azurestaticapps.net"
                 )
                 .AllowAnyHeader()
                 .AllowAnyMethod();
@@ -31,14 +33,20 @@ builder.Services.AddCors(options =>
     );
 });
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer(); // API metadata for Swagger
+builder.Services.AddSwaggerGen(o =>
+{
+    o.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Events API",
+        Version = "v1"
+    });
+});
 
 // Database Context
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlite(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("Presentation")
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
 
@@ -53,7 +61,12 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Events API v1");
+        c.RoutePrefix = "swagger";
+    });
 }
 
 app.UseHttpsRedirection();

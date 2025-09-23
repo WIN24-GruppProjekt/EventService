@@ -49,6 +49,24 @@ public class EventsController : ControllerBase
             return BadRequest(ModelState);
         }
 
+        // Check for conflicts before attempting to create
+        var hasConflict = await _eventService.HasConflictAsync(
+            createEventDto.StartTime,
+            createEventDto.EndTime,
+            createEventDto.Location,
+            createEventDto.LocationRoom
+        );
+
+        if (hasConflict)
+        {
+            return Conflict(
+                new
+                {
+                    message = "Event conflicts with an existing booking in the same location and room during the specified time.",
+                }
+            );
+        }
+
         var eventDto = await _eventService.CreateEventAsync(createEventDto);
         if (eventDto == null)
         {
@@ -64,6 +82,25 @@ public class EventsController : ControllerBase
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
+        }
+
+        // Check for conflicts before attempting to update, excluding the current event
+        var hasConflict = await _eventService.HasConflictAsync(
+            updateEventDto.StartTime,
+            updateEventDto.EndTime,
+            updateEventDto.Location,
+            updateEventDto.LocationRoom,
+            id
+        );
+
+        if (hasConflict)
+        {
+            return Conflict(
+                new
+                {
+                    message = "Event conflicts with an existing booking in the same location and room during the specified time.",
+                }
+            );
         }
 
         var eventDto = await _eventService.UpdateEventAsync(id, updateEventDto);

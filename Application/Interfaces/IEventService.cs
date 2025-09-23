@@ -11,4 +11,11 @@ public interface IEventService
     Task<EventDto?> UpdateEventAsync(Guid id, CreateEventDto updateEventDto);
     Task<bool> DeleteEventAsync(Guid id);
     Task<IEnumerable<EventDto>> GetEventsByDateRangeAsync(DateTime startDate, DateTime endDate);
+    Task<bool> HasConflictAsync(
+        DateTime startTime,
+        DateTime endTime,
+        string location,
+        string locationRoom,
+        Guid? excludeEventId = null
+    );
 }

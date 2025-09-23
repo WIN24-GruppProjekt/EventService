@@ -51,4 +51,35 @@ public class EventRepository : BaseRepository<EventEntity>, IEventRepository
             );
         }
     }
+
+    public async Task<RepositoryResult<IEnumerable<EventEntity>>> GetConflictingEventsAsync(
+        DateTime startTime,
+        DateTime endTime,
+        string location,
+        string locationRoom,
+        Guid? excludeEventId = null
+    )
+    {
+        try
+        {
+            var query = _dbSet
+                .Where(e => e.Location == location && e.LocationRoom == locationRoom)
+                .Where(e => e.StartTime < endTime && e.EndTime > startTime); // Overlap condition
+
+            if (excludeEventId.HasValue)
+            {
+                query = query.Where(e => e.Id != excludeEventId.Value);
+            }
+
+            var conflictingEvents = await query.ToListAsync();
+
+            return RepositoryResult<IEnumerable<EventEntity>>.Success(conflictingEvents);
+        }
+        catch (Exception ex)
+        {
+            return RepositoryResult<IEnumerable<EventEntity>>.Failure(
+                $"Error checking for conflicting events: {ex.Message}"
+            );
+        }
+    }
 }

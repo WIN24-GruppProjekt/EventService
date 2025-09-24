@@ -44,22 +44,6 @@ public class EventService : IEventService
 
     public async Task<EventDto?> CreateEventAsync(CreateEventDto createEventDto)
     {
-        // Check for conflicts before creating the event
-        var hasConflict = await HasConflictAsync(
-            createEventDto.StartTime,
-            createEventDto.EndTime,
-            createEventDto.Location,
-            createEventDto.LocationRoom
-        );
-
-        if (hasConflict)
-        {
-            // Return null to indicate failure due to conflict
-            // In a real application, you might want to throw a specific exception
-            // or return a more detailed result object
-            return null;
-        }
-
         var eventEntity = new EventEntity
         {
             Title = createEventDto.Title,
@@ -79,23 +63,6 @@ public class EventService : IEventService
         var existingResult = await _eventRepository.GetByIdAsync(id);
         if (!existingResult.IsSuccess || existingResult.Data == null)
         {
-            return null;
-        }
-
-        // Check for conflicts before updating the event, excluding the current event
-        var hasConflict = await HasConflictAsync(
-            updateEventDto.StartTime,
-            updateEventDto.EndTime,
-            updateEventDto.Location,
-            updateEventDto.LocationRoom,
-            id // Exclude the current event from conflict check
-        );
-
-        if (hasConflict)
-        {
-            // Return null to indicate failure due to conflict
-            // In a real application, you might want to throw a specific exception
-            // or return a more detailed result object
             return null;
         }
 

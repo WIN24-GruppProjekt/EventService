@@ -36,18 +36,12 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer(); // API metadata for Swagger
 builder.Services.AddSwaggerGen(o =>
 {
-    o.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Events API",
-        Version = "v1"
-    });
+    o.SwaggerDoc("v1", new OpenApiInfo { Title = "Events API", Version = "v1" });
 });
 
 // Database Context
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 // Repository registrations

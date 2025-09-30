@@ -9,4 +9,5 @@ public class EventDto
     public DateTime EndTime { get; set; }
     public string Location { get; set; } = null!;
     public string LocationRoom { get; set; } = null!;
+    public string TrainerName { get; set; } = null!;
 }

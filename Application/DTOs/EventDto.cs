@@ -7,7 +7,7 @@ public class EventDto
     public string Description { get; set; } = null!;
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
-    public string Location { get; set; } = null!;
-    public string LocationRoom { get; set; } = null!;
-    public string TrainerName { get; set; } = null!;
+    public string LocationId { get; set; } = null!;
+    public int RoomId { get; set; }
+    public string TrainerId { get; set; } = null!;
 }

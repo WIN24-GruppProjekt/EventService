@@ -50,8 +50,9 @@ public class EventService : IEventService
             Description = createEventDto.Description,
             StartTime = createEventDto.StartTime,
             EndTime = createEventDto.EndTime,
-            Location = createEventDto.Location,
-            LocationRoom = createEventDto.LocationRoom,
+            LocationId = createEventDto.LocationId,
+            RoomId = createEventDto.RoomId,
+            TrainerId = createEventDto.TrainerId,
         };
 
         var result = await _eventRepository.AddAsync(eventEntity);
@@ -71,8 +72,9 @@ public class EventService : IEventService
         eventEntity.Description = updateEventDto.Description;
         eventEntity.StartTime = updateEventDto.StartTime;
         eventEntity.EndTime = updateEventDto.EndTime;
-        eventEntity.Location = updateEventDto.Location;
-        eventEntity.LocationRoom = updateEventDto.LocationRoom;
+        eventEntity.LocationId = updateEventDto.LocationId;
+        eventEntity.RoomId = updateEventDto.RoomId;
+        eventEntity.TrainerId = updateEventDto.TrainerId;
 
         var result = await _eventRepository.UpdateAsync(eventEntity);
         return result.IsSuccess && result.Data != null ? MapToDto(result.Data) : null;
@@ -101,16 +103,16 @@ public class EventService : IEventService
     public async Task<bool> HasConflictAsync(
         DateTime startTime,
         DateTime endTime,
-        string location,
-        string locationRoom,
+        string locationId,
+        int roomId,
         Guid? excludeEventId = null
     )
     {
         var result = await _eventRepository.GetConflictingEventsAsync(
             startTime,
             endTime,
-            location,
-            locationRoom,
+            locationId,
+            roomId,
             excludeEventId
         );
 
@@ -126,8 +128,9 @@ public class EventService : IEventService
             Description = entity.Description,
             StartTime = entity.StartTime,
             EndTime = entity.EndTime,
-            Location = entity.Location,
-            LocationRoom = entity.LocationRoom,
+            LocationId = entity.LocationId,
+            RoomId = entity.RoomId,
+            TrainerId = entity.TrainerId,
         };
     }
 }

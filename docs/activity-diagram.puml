@@ -1,0 +1,109 @@
+@startuml EventService Activity Diagram
+!theme plain
+title EventService - Event Management Activity Diagram
+
+start
+
+:Client sends request;
+
+if (Request type?) then (GET /api/events)
+    :Get all events;
+    :Query database;
+    :Map entities to DTOs;
+    :Return events list;
+    
+elseif (GET /api/events/upcoming) then
+    :Get upcoming events;
+    :Filter events where StartTime > Now;
+    :Order by StartTime;
+    :Map entities to DTOs;
+    :Return upcoming events;
+    
+elseif (GET /api/events/{id}) then
+    :Get event by ID;
+    if (Event exists?) then (yes)
+        :Map entity to DTO;
+        :Return event;
+    else (no)
+        :Return NotFound(404);
+    endif
+    
+elseif (POST /api/events) then
+    :Validate model state;
+    if (Model valid?) then (no)
+        :Return BadRequest(400);
+    else (yes)
+        :Check for conflicts;
+        :Query overlapping events in same location/room;
+        if (Conflict exists?) then (yes)
+            :Return Conflict(409);
+        else (no)
+            :Create new event entity;
+            :Save to database;
+            if (Save successful?) then (yes)
+                :Map entity to DTO;
+                :Return Created(201);
+            else (no)
+                :Return BadRequest(400);
+            endif
+        endif
+    endif
+    
+elseif (PUT /api/events/{id}) then
+    :Validate model state;
+    if (Model valid?) then (no)
+        :Return BadRequest(400);
+    else (yes)
+        :Check for conflicts (exclude current event);
+        :Query overlapping events in same location/room;
+        if (Conflict exists?) then (yes)
+            :Return Conflict(409);
+        else (no)
+            :Get existing event;
+            if (Event exists?) then (no)
+                :Return NotFound(404);
+            else (yes)
+                :Update event properties;
+                :Save changes to database;
+                :Map entity to DTO;
+                :Return Ok(200);
+            endif
+        endif
+    endif
+    
+elseif (DELETE /api/events/{id}) then
+    :Delete event by ID;
+    if (Event exists and deleted?) then (yes)
+        :Return NoContent(204);
+    else (no)
+        :Return NotFound(404);
+    endif
+    
+elseif (GET /api/events/date-range) then
+    :Get events by date range;
+    :Filter events between start and end dates;
+    :Order by StartTime;
+    :Map entities to DTOs;
+    :Return filtered events;
+    
+else (Invalid endpoint)
+    :Return NotFound(404);
+endif
+
+stop
+
+note right
+  **Conflict Detection Logic:**
+  - Same location AND same room
+  - Time overlap: StartTime < EndTime AND EndTime > StartTime
+  - Exclude current event ID for updates
+end note
+
+note left
+  **Repository Pattern:**
+  - All database operations go through repositories
+  - Results wrapped in RepositoryResult<T>
+  - Error handling at repository level
+end note
+
+@enduml

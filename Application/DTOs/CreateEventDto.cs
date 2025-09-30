@@ -23,4 +23,8 @@ public class CreateEventDto
 
     [StringLength(100, ErrorMessage = "Location room cannot be longer than 100 characters.")]
     public string LocationRoom { get; set; } = null!;
+
+    [Required]
+    [StringLength(200, ErrorMessage = "Trainer name cannot be longer than 200 characters.")]
+    public string TrainerName { get; set; } = null!;
 }

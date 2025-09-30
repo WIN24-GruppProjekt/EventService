@@ -24,4 +24,7 @@ public class EventEntity
 
     [Required(ErrorMessage = "Location room is required")]
     public string LocationRoom { get; set; } = null!;
+
+    [Required(ErrorMessage = "Trainer name is required")]
+    public string TrainerName { get; set; } = null!;
 }

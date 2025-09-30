@@ -20,8 +20,9 @@ public class DataContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
             entity.Property(e => e.Description).HasMaxLength(1000);
-            entity.Property(e => e.Location).IsRequired().HasMaxLength(200);
-            entity.Property(e => e.LocationRoom).HasMaxLength(100);
+            entity.Property(e => e.LocationId).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.RoomId).IsRequired();
+            entity.Property(e => e.TrainerId).IsRequired().HasMaxLength(200);
             entity.Property(e => e.StartTime).IsRequired();
             entity.Property(e => e.EndTime).IsRequired();
         });

@@ -8,18 +8,14 @@ public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
 {
     public DataContext CreateDbContext(string[] args)
     {
-        var config = new ConfigurationBuilder()
-            .AddEnvironmentVariables()
-            .Build();
+        var config = new ConfigurationBuilder().AddEnvironmentVariables().Build();
 
         var conn =
-            config.GetConnectionString("DefaultConnection") ??
-            Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+            config.GetConnectionString("DefaultConnection")
+            ?? Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
             ?? throw new InvalidOperationException("Missing connection string.");
 
-        var opts = new DbContextOptionsBuilder<DataContext>()
-            .UseSqlServer(conn)
-            .Options;
+        var opts = new DbContextOptionsBuilder<DataContext>().UseSqlServer(conn).Options;
 
         return new DataContext(opts);
     }

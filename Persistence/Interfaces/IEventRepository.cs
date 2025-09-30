@@ -13,8 +13,8 @@ public interface IEventRepository : IBaseRepository<EventEntity>
     Task<RepositoryResult<IEnumerable<EventEntity>>> GetConflictingEventsAsync(
         DateTime startTime,
         DateTime endTime,
-        string location,
-        string locationRoom,
+        string locationId,
+        int roomId,
         Guid? excludeEventId = null
     );
 }

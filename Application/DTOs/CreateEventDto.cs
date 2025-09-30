@@ -18,13 +18,13 @@ public class CreateEventDto
     public DateTime EndTime { get; set; }
 
     [Required]
-    [StringLength(200, ErrorMessage = "Location cannot be longer than 200 characters.")]
-    public string Location { get; set; } = null!;
-
-    [StringLength(100, ErrorMessage = "Location room cannot be longer than 100 characters.")]
-    public string LocationRoom { get; set; } = null!;
+    [StringLength(100, ErrorMessage = "Location ID cannot be longer than 100 characters.")]
+    public string LocationId { get; set; } = null!;
 
     [Required]
-    [StringLength(200, ErrorMessage = "Trainer name cannot be longer than 200 characters.")]
-    public string TrainerName { get; set; } = null!;
+    public int RoomId { get; set; }
+
+    [Required]
+    [StringLength(100, ErrorMessage = "Trainer ID cannot be longer than 100 characters.")]
+    public string TrainerId { get; set; } = null!;
 }

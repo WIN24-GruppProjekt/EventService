@@ -55,15 +55,15 @@ public class EventRepository : BaseRepository<EventEntity>, IEventRepository
     public async Task<RepositoryResult<IEnumerable<EventEntity>>> GetConflictingEventsAsync(
         DateTime startTime,
         DateTime endTime,
-        string location,
-        string locationRoom,
+        string locationId,
+        int roomId,
         Guid? excludeEventId = null
     )
     {
         try
         {
             var query = _dbSet
-                .Where(e => e.Location == location && e.LocationRoom == locationRoom)
+                .Where(e => e.LocationId == locationId && e.RoomId == roomId)
                 .Where(e => e.StartTime < endTime && e.EndTime > startTime); // Overlap condition
 
             if (excludeEventId.HasValue)

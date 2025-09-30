@@ -14,8 +14,8 @@ public interface IEventService
     Task<bool> HasConflictAsync(
         DateTime startTime,
         DateTime endTime,
-        string location,
-        string locationRoom,
+        string locationId,
+        int roomId,
         Guid? excludeEventId = null
     );
 }

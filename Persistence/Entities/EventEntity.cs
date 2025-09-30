@@ -19,12 +19,12 @@ public class EventEntity
     [Required(ErrorMessage = "End time is required")]
     public DateTime EndTime { get; set; }
 
-    [Required(ErrorMessage = "Location is required")]
-    public string Location { get; set; } = null!;
+    [Required(ErrorMessage = "Location ID is required")]
+    public string LocationId { get; set; } = null!;
 
-    [Required(ErrorMessage = "Location room is required")]
-    public string LocationRoom { get; set; } = null!;
+    [Required(ErrorMessage = "Room ID is required")]
+    public int RoomId { get; set; }
 
-    [Required(ErrorMessage = "Trainer name is required")]
-    public string TrainerName { get; set; } = null!;
+    [Required(ErrorMessage = "Trainer ID is required")]
+    public string TrainerId { get; set; } = null!;
 }

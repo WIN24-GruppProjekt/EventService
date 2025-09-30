@@ -53,8 +53,8 @@ public class EventsController : ControllerBase
         var hasConflict = await _eventService.HasConflictAsync(
             createEventDto.StartTime,
             createEventDto.EndTime,
-            createEventDto.Location,
-            createEventDto.LocationRoom
+            createEventDto.LocationId,
+            createEventDto.RoomId
         );
 
         if (hasConflict)
@@ -88,8 +88,8 @@ public class EventsController : ControllerBase
         var hasConflict = await _eventService.HasConflictAsync(
             updateEventDto.StartTime,
             updateEventDto.EndTime,
-            updateEventDto.Location,
-            updateEventDto.LocationRoom,
+            updateEventDto.LocationId,
+            updateEventDto.RoomId,
             id
         );
 

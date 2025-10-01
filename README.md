@@ -2,55 +2,82 @@
 
 A .NET 9.0 Web API for managing events with double booking prevention.
 
-## ✨ Features
+## Features
 
-- **Event Management** - Create, read, update, and delete events with trainer assignments
-- **Double Booking Prevention** - Automatically prevents conflicting bookings using LocationId and RoomId
-- **Time-based Filtering** - Get upcoming events and events by date range
-- **ID-based References** - Uses IDs for Location, Room, and Trainer (ready for microservice integration)
-- **Clean Architecture** - Separation of concerns with Application, Persistence, and Presentation layers
+- Event CRUD operations with trainer assignments
+- Double booking prevention using LocationId and RoomId
+- Time-based filtering (upcoming events, date ranges)
+- ID-based references for Location, Room, and Trainer
+- Clean architecture with Application, Persistence, and Presentation layers
 
-## 🚀 Quick Start
+## Tech Stack
+
+- .NET 9.0
+- ASP.NET Core Web API
+- Entity Framework Core 9.0
+- SQL Server
+- Swagger/OpenAPI
+
+## Setup
 
 ### Prerequisites
 
 - .NET 9.0 SDK
+- SQL Server (LocalDB, Express, or full instance)
 
-### Run the API
+### Installation
+
+1. Clone the repository
 
 ```bash
 git clone <your-repo-url>
 cd EventService
-dotnet restore
+```
+
+2. Configure database connection
+
+```bash
+# Copy template and update connection string
+cp Presentation/appsettings.template.json Presentation/appsettings.json
+```
+
+Edit `appsettings.json` with your SQL Server connection string:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=EventServiceDb;Trusted_Connection=True;"
+  }
+}
+```
+
+3. Apply database migrations
+
+```bash
+dotnet ef database update --project Persistence --startup-project Presentation
+```
+
+4. Run the API
+
+```bash
 dotnet run --project Presentation
 ```
 
-The API will be available at `http://localhost:5000` with Swagger documentation at `/swagger`.
+API available at `http://localhost:5000` • Swagger at `/swagger`
 
-## 📚 API Endpoints
+## API Endpoints
 
-| Method   | Endpoint                 | Description              |
-| -------- | ------------------------ | ------------------------ |
-| `GET`    | `/api/events`            | Get all events           |
-| `GET`    | `/api/events/upcoming`   | Get upcoming events      |
-| `GET`    | `/api/events/{id}`       | Get specific event       |
-| `POST`   | `/api/events`            | Create new event         |
-| `PUT`    | `/api/events/{id}`       | Update event             |
-| `DELETE` | `/api/events/{id}`       | Delete event             |
-| `GET`    | `/api/events/date-range` | Get events by date range |
+| Method | Endpoint                 | Description              |
+| ------ | ------------------------ | ------------------------ |
+| GET    | `/api/events`            | Get all events           |
+| GET    | `/api/events/upcoming`   | Get upcoming events      |
+| GET    | `/api/events/{id}`       | Get event by ID          |
+| POST   | `/api/events`            | Create event             |
+| PUT    | `/api/events/{id}`       | Update event             |
+| DELETE | `/api/events/{id}`       | Delete event             |
+| GET    | `/api/events/date-range` | Get events by date range |
 
-## 📝 Event Schema
-
-Each event contains:
-
-- **Title** - Event name (max 200 chars)
-- **Description** - Event details (max 1000 chars)
-- **StartTime** / **EndTime** - Event schedule
-- **LocationId** - Reference to location (string)
-- **RoomId** - Reference to room (int)
-- **TrainerId** - Reference to trainer (string)
-
-### Example Request Body
+## Event Schema
 
 ```json
 {
@@ -64,31 +91,26 @@ Each event contains:
 }
 ```
 
-## 🚫 Double Booking Prevention
+**Validation:**
 
-The system automatically prevents double bookings by:
+- Title: max 200 characters (required)
+- Description: max 1000 characters
+- LocationId: max 100 characters (required)
+- TrainerId: max 100 characters (required)
 
-- Checking for time overlaps using LocationId and RoomId
-- Returning HTTP 409 Conflict when conflicts are detected
-- Excluding the current event when updating (allows extending/modifying existing events)
+## Double Booking Prevention
 
-### Conflict Rules
+Prevents overlapping events in the same location and room:
 
-- ✅ **Allowed**: Different rooms, same time
-- ✅ **Allowed**: Same room, different times (no overlap)
-- ❌ **Blocked**: Same room (RoomId), overlapping times
+- Returns HTTP 409 Conflict when booking conflicts detected
+- Checks LocationId + RoomId + time overlap
+- Excludes current event when updating
 
-## 🗄️ Database
-
-- Uses SQLite with Entity Framework Core
-- Database file is auto-created as `EventService.db`
-- Run `dotnet ef database update` from the Presentation folder if needed
-
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 EventService/
-├── Application/      # Business logic and DTOs
-├── Persistence/      # Database entities and repositories
-└── Presentation/     # Web API controllers
+├── Application/      # Business logic, services, DTOs
+├── Persistence/      # EF Core, entities, repositories
+└── Presentation/     # API controllers, configuration
 ```
